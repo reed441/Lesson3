@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Alexi Reed">
+
+<title>Lesson 3: Variable Types, Loops, and Conditionals</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="index_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap-81267100e462c21b3d6c0d5bf76a3417.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lesson 3: Variable Types, Loops, and Conditionals</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Alexi Reed </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="today-lets-work-with-data" class="level1">
+<h1>Today: Let’s Work With Data</h1>
+<section id="learning-goals" class="level2">
+<h2 class="anchored" data-anchor-id="learning-goals">Learning Goals</h2>
+<p>By the end of this session, learners will be able to:</p>
+<ol type="1">
+<li><p>Identify the different variable types.</p></li>
+<li><p>Automate repetitive tasks using for loops.</p></li>
+<li><p>Make decisions in R using if statements to check conditions in their data.</p></li>
+</ol>
+</section>
+</section>
+<section id="quick-review-importing-data-and-performing-simple-calculations" class="level1">
+<h1>1. Quick Review: Importing Data and Performing Simple Calculations</h1>
+<p>We use the <code>read.csv()</code> function to read in a csv file. Make sure rehab_study.csv is saved in the same project/folder you are working in.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rehab_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"rehab_study.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can perform simple calculations and we can refer to a variable inside our dataset using <code>$</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(rehab_data<span class="sc">$</span>baseline_score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 48.20833</code></pre>
+</div>
+</div>
+<p>Read this as: find <code>baseline_score</code> inside <code>rehab_data</code>, then calculate its mean.</p>
+</section>
+<section id="variable-types" class="level1">
+<h1>2. Variable Types</h1>
+<p>Our dataset has several different data types, and due to their different formats, R already reads them in differently. We can check to see what R is interpreting them as by using the str function.</p>
+<p>We can check the types for all of our variables at once using the <code>str()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(rehab_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   24 obs. of  7 variables:
+ $ participant_id: chr  "P001" "P002" "P003" "P004" ...
+ $ age           : int  51 60 38 29 32 38 28 47 58 45 ...
+ $ group         : chr  "Intervention" "Intervention" "Intervention" "Intervention" ...
+ $ baseline_score: int  59 50 35 47 59 61 49 45 45 37 ...
+ $ followup_score: int  69 58 46 57 76 73 66 53 63 55 ...
+ $ visits        : int  4 6 9 6 8 4 8 10 10 8 ...
+ $ completed     : chr  "Yes" "Yes" "Yes" "Yes" ...</code></pre>
+</div>
+</div>
+<p>You can also check the type of a specific variable by calling on or referring to it directly.</p>
+<section id="your-turn-check-the-variable-type-for-completed." class="level2">
+<h2 class="anchored" data-anchor-id="your-turn-check-the-variable-type-for-completed.">Your Turn: Check the variable type for <code>completed</code>.</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE HERE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+If you’re stuck, click here for the answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(rehab_data<span class="sc">$</span>completed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> chr [1:24] "Yes" "Yes" "Yes" "Yes" "Yes" "Yes" "Yes" "Yes" "Yes" "Yes" ...</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Look at the variable type for <strong>Group</strong>. This is a categorical variable, but R is just reading them in as a string. If we want R to recognize this as a categorical variable, we must change it to a factor using <code>as.factor()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.factor</span>(rehab_data<span class="sc">$</span>group)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] Intervention Intervention Intervention Intervention Intervention
+ [6] Intervention Intervention Intervention Intervention Intervention
+[11] Intervention Intervention Control      Control      Control     
+[16] Control      Control      Control      Control      Control     
+[21] Control      Control      Control      Control     
+Levels: Control Intervention</code></pre>
+</div>
+</div>
+<p>Similar functions exist to change variables to other variable types like:</p>
+<ul>
+<li><p><code>as.character</code> - Changes to a character (chr, for short)</p></li>
+<li><p><code>as.numeric</code> - Changes to a number (num, for short)</p></li>
+<li><p><code>as.integer</code> - Changer to an integer (int, for short)</p></li>
+</ul>
+</section>
+</section>
+<section id="loops-when-we-want-to-do-something-over-and-over-again" class="level1">
+<h1>3. Loops: When We Want To Do Something Over and Over Again</h1>
+<p>In general, loops tell your program to repeat a task and are a staple in all programming languages. Loops do something as many times as you tell it to.. which is pretty awesome. What’s not awesome about loops is the syntax.</p>
+<p>There are 3 types of loops: <code>for</code>, <code>while</code>, and <code>repeat</code>. This lesson covers <code>for</code> loops.</p>
+<section id="for-loops" class="level2">
+<h2 class="anchored" data-anchor-id="for-loops">For Loops</h2>
+<p>A <code>for</code> loop allows you to repeat an action for every item in a list or vector.</p>
+<p><strong><em>General Syntax</em></strong></p>
+<blockquote class="blockquote">
+<p>for (value in sequence)</p>
+<p>{ # execute this code }</p>
+</blockquote>
+<section id="simple-for-loop-example" class="level3">
+<h3 class="anchored" data-anchor-id="simple-for-loop-example">Simple For Loop Example</h3>
+<p>Let’s say we have an object that has all the days of the week stored in called <code>week</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>week <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'Sunday'</span>,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>          <span class="st">'Monday'</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>          <span class="st">'Tuesday'</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>          <span class="st">'Wednesday'</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>          <span class="st">'Thursday'</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>          <span class="st">'Friday'</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>          <span class="st">'Saturday'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I could write a for loop to print all the days of week from that vector</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (day <span class="cf">in</span> week) {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(day)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Sunday"
+[1] "Monday"
+[1] "Tuesday"
+[1] "Wednesday"
+[1] "Thursday"
+[1] "Friday"
+[1] "Saturday"</code></pre>
+</div>
+</div>
+<p>Here, I’m telling R for the entire vector “week”, print the day of the week for each pass.</p>
+<ul>
+<li><p>Pass 1: R sets day = Sunday, so it prints “Sunday”</p></li>
+<li><p>Pass 2: R sets day = Monday, so it prints “Monday</p></li>
+<li><p>…and so on, until it finishes all 7 days!</p></li>
+</ul>
+<p>Note that the variable name <code>day</code> is arbitrary - you could call it <code>for (i in week)</code> or <code>for (x in week)</code>. Naming it <code>day</code> simply makes the code readable and self-documenting.</p>
+<p>You could also use a <code>for</code> loop to do something across all the rows in your data frame.</p>
+</section>
+<section id="for-loop-example-1-a-hello-world-remix" class="level3">
+<h3 class="anchored" data-anchor-id="for-loop-example-1-a-hello-world-remix">For Loop Example #1: A “Hello World!” Remix</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(rehab_data)) {</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Hello"</span>, rehab_data<span class="sc">$</span>participant_id[i], <span class="st">"from the"</span>, rehab_data<span class="sc">$</span>group[i], <span class="st">"group!"</span>))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Hello P001 from the Intervention group!"
+[1] "Hello P002 from the Intervention group!"
+[1] "Hello P003 from the Intervention group!"
+[1] "Hello P004 from the Intervention group!"
+[1] "Hello P005 from the Intervention group!"
+[1] "Hello P006 from the Intervention group!"
+[1] "Hello P007 from the Intervention group!"
+[1] "Hello P008 from the Intervention group!"
+[1] "Hello P009 from the Intervention group!"
+[1] "Hello P010 from the Intervention group!"
+[1] "Hello P011 from the Intervention group!"
+[1] "Hello P012 from the Intervention group!"
+[1] "Hello P013 from the Control group!"
+[1] "Hello P014 from the Control group!"
+[1] "Hello P015 from the Control group!"
+[1] "Hello P016 from the Control group!"
+[1] "Hello P017 from the Control group!"
+[1] "Hello P018 from the Control group!"
+[1] "Hello P019 from the Control group!"
+[1] "Hello P020 from the Control group!"
+[1] "Hello P021 from the Control group!"
+[1] "Hello P022 from the Control group!"
+[1] "Hello P023 from the Control group!"
+[1] "Hello P024 from the Control group!"</code></pre>
+</div>
+</div>
+<ul>
+<li><p>Pass 1 (i =1): R looks at row 1 and prints “Hello P0001 from the Intervention group!”</p></li>
+<li><p>Pass 2 (i =2): R looks at row 2 and prints “Hello P0002 from the Treatment group!”</p></li>
+<li><p>And so on until it hits the last row.</p></li>
+</ul>
+</section>
+<section id="applied-for-loop-example-calculating-individual-score-improvement" class="level3">
+<h3 class="anchored" data-anchor-id="applied-for-loop-example-calculating-individual-score-improvement">Applied For Loop Example: Calculating Individual Score Improvement</h3>
+<p><strong>Goal</strong>: To calculate the change between baseline and follow-up scores for each participant (<code>followup_score</code> - <code>baseline_score</code>) and add it to our data frame.</p>
+<p>First, we need to create a vector to store the results in. We want this vector to have as many slots as our <code>rehab_data</code> data frame. We’ll call this vector we’re creating <code>score_change</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>score_change <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">nrow</span>(rehab_data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Look in <strong>Environment</strong>. What do you see?</p>
+<p>Then, we will write our for-loop to calculate this change score.</p>
+<p>We want our for loop to</p>
+<ul>
+<li><p>Iterate row-by-row of our data frame, rehab_data. (what we specify immediately after <strong>for</strong>)</p></li>
+<li><p>To perform <code>followup_score</code> - baseline_score for (what will go in curly brackets)</p></li>
+<li><p>To perform the operation for each participant</p></li>
+<li><p>And to store each calculation into the empty vector we created called <code>score_change</code>, which means we want everything assigned here (<strong>&lt;-</strong>)</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(rehab_data)) {</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  score_change[i] <span class="ot">&lt;-</span> rehab_data<span class="sc">$</span>followup_score[i] <span class="sc">-</span> rehab_data<span class="sc">$</span>baseline_score[i]</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Look in <strong>Environment</strong>. What changed in the <code>score_change</code> vector?</p>
+<p>Now, add <code>score_change</code> to your data frame by assigning it to a new variable within <code>rehab_data</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>rehab_data<span class="sc">$</span>score_change <span class="ot">&lt;-</span> score_change</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="conditionals-introducing-logic-into-your-code" class="level1">
+<h1>4. Conditionals: Introducing Logic Into Your Code</h1>
+<p>Conditionals are a way to introduce logic into your code, with the most common conditional statement sbeing “if” and “if-else”.</p>
+<section id="if-statement" class="level3">
+<h3 class="anchored" data-anchor-id="if-statement">If Statement</h3>
+<p>Think of an <code>if</code> statement like a fork in the road. It asks R a simple true/false question. If the answer is <strong>TRUE</strong>, R follows the path inside the curly braces <code>{ }</code>. If it’s <strong>FALSE</strong>, R ignores that path entirely and moves on.</p>
+<p>Let’s say we wanted to look at P001’s visits and see if they were greater than the visit minimum of 5.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>p001_visits <span class="ot">&lt;-</span> rehab_data<span class="sc">$</span>visits[<span class="dv">1</span>] </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (p001_visits <span class="sc">&gt;=</span> <span class="dv">5</span>) {</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">"This participant has met the minimum requirement!"</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Since their visit number is NOT greater than 5, nothing happened. If we wanted something to print to tell us that, we would use an “If-Else” statement.</p>
+</section>
+<section id="if-else-statement---option-1" class="level3">
+<h3 class="anchored" data-anchor-id="if-else-statement---option-1">If-Else Statement - Option 1</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (p001_visits <span class="sc">&gt;=</span> <span class="dv">5</span>) {</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">"This participant has met the minimum requirement!"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">"This participant has NOT met the minimum requirement!"</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "This participant has NOT met the minimum requirement!"</code></pre>
+</div>
+</div>
+<p>Here, we’ve added an <code>else</code> argument that specifies what to do if the previous condition is not met.</p>
+</section>
+<section id="if-else-statement---option-2-vectorized-format" class="level3">
+<h3 class="anchored" data-anchor-id="if-else-statement---option-2-vectorized-format">If-Else Statement - Option 2 (Vectorized Format)</h3>
+<p><strong><em>General Syntax - Vectorized Format</em></strong></p>
+<ul>
+<li>ifelse(conditional statement, “Printed If True”, “Printed If False”)</li>
+</ul>
+<p>Here’s the same example written differently.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ifelse</span>(p001_visits <span class="sc">&gt;=</span> <span class="dv">5</span>, <span class="st">"This participant has met the minimum requirement!"</span>,<span class="st">"This participant has NOT met the minimum requirement!"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "This participant has NOT met the minimum requirement!"</code></pre>
+</div>
+</div>
+<p>You could also use an if-else statement to categorize participants based on a condition or threshold.</p>
+</section>
+<section id="your-turn-2-categorizing-participants-based-on-priority-status---vectorized-format" class="level3">
+<h3 class="anchored" data-anchor-id="your-turn-2-categorizing-participants-based-on-priority-status---vectorized-format">Your Turn #2: Categorizing Participants Based on Priority Status - Vectorized Format</h3>
+<p>Let’s say a participant with a baseline score below 50 is considered a “High Priority” and above 50 is “Low Priority”. We can write an if else statement classify people as such and have it automatically write into the data frame.</p>
+<p><strong>Goal</strong>: Apply the baseline threshold across every row in the dataset and have it automatically write the results into the data frame under variable “priority_status”.</p>
+<p>Uncomment the line of code by deleting the hashtag and fill in the rest.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># rehab_data$priority_status &lt;-</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Click here for the Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>rehab_data<span class="sc">$</span>priority_status <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(rehab_data<span class="sc">$</span>baseline_score <span class="sc">&lt;</span> <span class="dv">50</span>, <span class="st">"High Priority"</span>, <span class="st">"Low Priority"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="optional-challenge-combining-conditionals-and-for-loops" class="level2">
+<h2 class="anchored" data-anchor-id="optional-challenge-combining-conditionals-and-for-loops">Optional Challenge: Combining Conditionals and For Loops</h2>
+<p>Finished early? Give this a try.</p>
+<p>Write a for loop that checks every participant in rehab_data. If their visits are greater than or equal to 5, print the following message: “Participant [ID] completed enough visits!”. Otherwise, print “Participant [ID] needs more visits.”</p>
+<p>Uncomment the line sof code by removing the hashtags at the beginning of each line and fill in the blanks.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#for (i in 1:_____) {</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a> <span class="co"># if (rehab_data$___[i] &gt;= _) {</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a> <span class="co">#   print(paste("Participant", rehab_data$participant_id[i], "______"))</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a> <span class="co"># } else {</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a> <span class="co">#   print(____)</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a> <span class="co"># }</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Answer: Which participants did not complete enough visits?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+If you’re stuck, click here for the answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(rehab_data)) {</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (rehab_data<span class="sc">$</span>visits[i] <span class="sc">&gt;=</span> <span class="dv">5</span>) {</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Participant"</span>, rehab_data<span class="sc">$</span>participant_id[i], <span class="st">"completed enough visits!"</span>))</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Participant"</span>, rehab_data<span class="sc">$</span>participant_id[i], <span class="st">"needs more visits."</span>))</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Participant P001 needs more visits."
+[1] "Participant P002 completed enough visits!"
+[1] "Participant P003 completed enough visits!"
+[1] "Participant P004 completed enough visits!"
+[1] "Participant P005 completed enough visits!"
+[1] "Participant P006 needs more visits."
+[1] "Participant P007 completed enough visits!"
+[1] "Participant P008 completed enough visits!"
+[1] "Participant P009 completed enough visits!"
+[1] "Participant P010 completed enough visits!"
+[1] "Participant P011 completed enough visits!"
+[1] "Participant P012 completed enough visits!"
+[1] "Participant P013 completed enough visits!"
+[1] "Participant P014 completed enough visits!"
+[1] "Participant P015 completed enough visits!"
+[1] "Participant P016 completed enough visits!"
+[1] "Participant P017 completed enough visits!"
+[1] "Participant P018 completed enough visits!"
+[1] "Participant P019 completed enough visits!"
+[1] "Participant P020 completed enough visits!"
+[1] "Participant P021 completed enough visits!"
+[1] "Participant P022 completed enough visits!"
+[1] "Participant P023 completed enough visits!"
+[1] "Participant P024 completed enough visits!"</code></pre>
+</div>
+</div>
+<p>Participants 001 and 006 did not complete enough visits.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
