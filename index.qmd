@@ -155,7 +155,7 @@ We want our for loop to
 
 -   Iterate row-by-row of our data frame, rehab_data. (what we specify immediately after **for**)
 
--   To perform `followup_score` - baseline_score for (what will go in curly brackets)
+-   To perform `followup_score` - `baseline_score` for (what will go in curly brackets)
 
 -   To perform the operation for each participant
 
